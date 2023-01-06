@@ -28,15 +28,19 @@ const wsHandler = (ws: WebSocket) => {
   };
   ws.onclose = () => {
     clients.delete(id);
-    sendMessage(
-      JSON.stringify({
-        type: 'left',
-        data: {
-          author: usernames.get(id),
-          ts: Date.now(),
-        },
-      })
-    );
+
+    const username = usernames.get(id);
+    if (username) {
+      sendMessage(
+        JSON.stringify({
+          type: 'left',
+          data: {
+            author: usernames.get(id),
+            ts: Date.now(),
+          },
+        })
+      );
+    }
     usernames.delete(id);
   };
 };
