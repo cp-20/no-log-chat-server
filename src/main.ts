@@ -41,10 +41,13 @@ const wsHandler = (ws: WebSocket) => {
   };
 };
 
-serve((req) => {
-  const { response, socket } = Deno.upgradeWebSocket(req);
+serve(
+  (req) => {
+    const { response, socket } = Deno.upgradeWebSocket(req);
 
-  wsHandler(socket);
+    wsHandler(socket);
 
-  return response;
-});
+    return response;
+  },
+  { port: 443 }
+);
