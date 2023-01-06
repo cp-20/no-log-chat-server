@@ -8,12 +8,16 @@ const sendMessage = (message: string) => {
   clients.forEach((client) => {
     client.send(message);
   });
+
+  console.log(JSON.parse(message));
 };
 
 const wsHandler = (ws: WebSocket) => {
   const id = ++clientId;
   clients.set(id, ws);
-  ws.onopen = () => {};
+  ws.onopen = () => {
+    console.log('connected');
+  };
   ws.onmessage = (e) => {
     const payload = JSON.parse(e.data);
 
