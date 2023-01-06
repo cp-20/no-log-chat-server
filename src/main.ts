@@ -37,13 +37,10 @@ const wsHandler = (ws: WebSocket) => {
   };
 };
 
-serve(
-  (req) => {
-    const { response, socket } = Deno.upgradeWebSocket(req);
+serve((req) => {
+  const { response, socket } = Deno.upgradeWebSocket(req);
 
-    wsHandler(socket);
+  wsHandler(socket);
 
-    return response;
-  },
-  { port: 8000 }
-);
+  return response;
+});
