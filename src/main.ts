@@ -79,5 +79,5 @@ serve(
 
     return response;
   },
-  { port: 443 }
+  { port: parseInt(Deno.env.get('PORT') ?? '') || 443 }
 );
