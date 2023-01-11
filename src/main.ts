@@ -16,6 +16,17 @@ const sendMessage = (message: string, id: number) => {
   clients.get(id)?.send(message);
 };
 
+const memberUpdate = () => {
+  sendMessageToAll(
+    JSON.stringify({
+      type: 'memberUpdate',
+      data: {
+        members: Array.from(clients.values()),
+      },
+    })
+  );
+};
+
 const wsHandler = (ws: WebSocket) => {
   const id = ++clientId;
   clients.set(id, ws);
@@ -31,6 +42,8 @@ const wsHandler = (ws: WebSocket) => {
     if (payload.type === 'join') {
       usernames.set(id, payload.data.author);
       sendMessageToAll(e.data);
+
+      memberUpdate();
     }
     if (payload.type === 'ping') {
       sendMessage(JSON.stringify({ type: 'pong' }), id);
@@ -53,6 +66,8 @@ const wsHandler = (ws: WebSocket) => {
       );
     }
     usernames.delete(id);
+
+    memberUpdate();
   };
 };
 
