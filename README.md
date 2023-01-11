@@ -18,13 +18,13 @@ https://no-log-chat.vercel.app/
 
 必要なもの: [Deno](https://deno.land/)
 
-1. このリポジトリをクローンする
+**1. このリポジトリをクローンする**
 
 ```
 git clone https://github.com/cp-20/no-log-chat-server
 ```
 
-2. サーバー起動
+**2. サーバー起動**
 
 必要に応じて環境変数`PORT`を指定してください
 
