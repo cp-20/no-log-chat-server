@@ -6,7 +6,9 @@ let clientId = 0;
 
 const sendMessageToAll = (message: string) => {
   clients.forEach((client) => {
-    client.send(message);
+    if (client.readyState === client.OPEN) {
+      client.send(message);
+    }
   });
 
   console.log(JSON.parse(message));
