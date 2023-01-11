@@ -22,6 +22,7 @@ https://no-log-chat.vercel.app/
 
 ```
 git clone https://github.com/cp-20/no-log-chat-server
+cd no-log-chat-server
 ```
 
 **2. サーバー起動**
