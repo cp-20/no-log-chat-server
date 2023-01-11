@@ -21,10 +21,16 @@ const wsHandler = (ws: WebSocket) => {
   ws.onmessage = (e) => {
     const payload = JSON.parse(e.data);
 
+    if (payload.type === 'message') {
+      sendMessage(e.data);
+    }
     if (payload.type === 'join') {
       usernames.set(id, payload.data.author);
+      sendMessage(e.data);
     }
-    sendMessage(e.data);
+    if (payload.type === 'ping') {
+      clients.get(id)?.send(JSON.stringify({ type: 'pong' }));
+    }
   };
   ws.onclose = () => {
     clients.delete(id);
