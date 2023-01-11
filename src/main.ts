@@ -28,6 +28,7 @@ const wsHandler = (ws: WebSocket) => {
   };
   ws.onclose = () => {
     clients.delete(id);
+    console.log('disconnected');
 
     const username = usernames.get(id);
     if (username) {
