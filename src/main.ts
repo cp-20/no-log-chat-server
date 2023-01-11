@@ -14,10 +14,6 @@ const sendMessageToAll = (message: string) => {
   console.log(JSON.parse(message));
 };
 
-const sendMessage = (message: string, id: number) => {
-  clients.get(id)?.send(message);
-};
-
 const memberUpdateMessage = () =>
   JSON.stringify({
     type: 'memberUpdate',
@@ -51,7 +47,7 @@ const wsHandler = (ws: WebSocket) => {
       memberUpdate();
     }
     if (payload.type === 'ping') {
-      sendMessage(JSON.stringify({ type: 'pong' }), id);
+      ws.send(JSON.stringify({ type: 'pong' }));
     }
   };
   ws.onclose = () => {
