@@ -4,12 +4,16 @@ const clients = new Map<number, WebSocket>();
 const usernames = new Map<number, string>();
 let clientId = 0;
 
-const sendMessage = (message: string) => {
+const sendMessageToAll = (message: string) => {
   clients.forEach((client) => {
     client.send(message);
   });
 
   console.log(JSON.parse(message));
+};
+
+const sendMessage = (message: string, id: number) => {
+  clients.get(id)?.send(message);
 };
 
 const wsHandler = (ws: WebSocket) => {
@@ -22,14 +26,14 @@ const wsHandler = (ws: WebSocket) => {
     const payload = JSON.parse(e.data);
 
     if (payload.type === 'message') {
-      sendMessage(e.data);
+      sendMessageToAll(e.data);
     }
     if (payload.type === 'join') {
       usernames.set(id, payload.data.author);
-      sendMessage(e.data);
+      sendMessageToAll(e.data);
     }
     if (payload.type === 'ping') {
-      clients.get(id)?.send(JSON.stringify({ type: 'pong' }));
+      sendMessage(JSON.stringify({ type: 'pong' }), id);
     }
   };
   ws.onclose = () => {
@@ -38,7 +42,7 @@ const wsHandler = (ws: WebSocket) => {
 
     const username = usernames.get(id);
     if (username) {
-      sendMessage(
+      sendMessageToAll(
         JSON.stringify({
           type: 'left',
           data: {
