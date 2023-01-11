@@ -21,7 +21,7 @@ const memberUpdate = () => {
     JSON.stringify({
       type: 'memberUpdate',
       data: {
-        members: Array.from(clients.values()),
+        members: Array.from(usernames.values()),
       },
     })
   );
