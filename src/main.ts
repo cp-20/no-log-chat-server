@@ -18,15 +18,16 @@ const sendMessage = (message: string, id: number) => {
   clients.get(id)?.send(message);
 };
 
+const memberUpdateMessage = () =>
+  JSON.stringify({
+    type: 'memberUpdate',
+    data: {
+      members: Array.from(usernames.values()),
+    },
+  });
+
 const memberUpdate = () => {
-  sendMessageToAll(
-    JSON.stringify({
-      type: 'memberUpdate',
-      data: {
-        members: Array.from(usernames.values()),
-      },
-    })
-  );
+  sendMessageToAll(memberUpdateMessage());
 };
 
 const wsHandler = (ws: WebSocket) => {
@@ -34,6 +35,8 @@ const wsHandler = (ws: WebSocket) => {
   clients.set(id, ws);
   ws.onopen = () => {
     console.log('connected');
+
+    ws.send(memberUpdateMessage());
   };
   ws.onmessage = (e) => {
     const payload = JSON.parse(e.data);
